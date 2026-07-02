@@ -109,6 +109,13 @@ function totalScore(recipe, userIngredients) {
     return calculateIngredientScore(recipe, userIngredients) * 70 + nutritionScore(recipe) * 0.3;
 }
 
+function sortByMatchRate(recipeList, userIngredients) {
+    return recipeList.sort((a, b) => {
+        const matchDiff = calculateIngredientScore(b, userIngredients) - calculateIngredientScore(a, userIngredients);
+        return matchDiff || nutritionScore(b) - nutritionScore(a);
+    });
+}
+
 async function recommendRecipes() {
     await loadRecipes();
     const userIngredients = getUserIngredients();
@@ -116,7 +123,10 @@ async function recommendRecipes() {
         alert("Please enter ingredients.");
         return [];
     }
-    lastRecommendedRecipes = recipes.map(recipe => ({ ...recipe, score: totalScore(recipe, userIngredients) })).sort((a, b) => b.score - a.score);
+    lastRecommendedRecipes = sortByMatchRate(
+        recipes.map(recipe => ({ ...recipe, score: totalScore(recipe, userIngredients) })),
+        userIngredients
+    );
     return lastRecommendedRecipes;
 }
 
@@ -186,7 +196,7 @@ document.getElementById("sortSelect").addEventListener("change", async function 
     const result = lastRecommendedRecipes.length > 0 ? [...lastRecommendedRecipes] : await recommendRecipes();
     if (this.value === "time") result.sort((a, b) => a.time - b.time);
     if (this.value === "protein") result.sort((a, b) => b.nutrition.protein - a.nutrition.protein);
-    if (this.value === "score") result.sort((a, b) => (b.score || 0) - (a.score || 0));
+    if (this.value === "score") sortByMatchRate(result, getUserIngredients());
     displayRecipes(result);
 });
 
