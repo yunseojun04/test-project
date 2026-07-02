@@ -110,7 +110,7 @@ async function searchRecipe(){
     document.getElementById("ingredient").value;
 
     const url =
-    `http://openapi.foodsafetykorea.go.kr/api/keyId/serviceId/dataType/startIdx/endIdx?ingredients=${ingredient}&apiKey=c3e54af0e795400d89e4`;
+    `https://openapi.foodsafetykorea.go.kr/api/keyId/serviceId/dataType/startIdx/endIdx?ingredients=${ingredient}&apiKey=c3e54af0e795400d89e4`;
 
     const response = await fetch(url);
 

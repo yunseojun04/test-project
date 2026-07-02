@@ -12,7 +12,7 @@ let recipesLoaded = false;
 
 function getApiUrl() {
     const { keyId, serviceId, dataType, startIdx, endIdx } = API_CONFIG;
-    return `http://openapi.foodsafetykorea.go.kr/api/${keyId}/${serviceId}/${dataType}/${startIdx}/${endIdx}`;
+    return `https://openapi.foodsafetykorea.go.kr/api/${keyId}/${serviceId}/${dataType}/${startIdx}/${endIdx}`;
 }
 
 function toNumber(value) {
